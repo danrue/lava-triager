@@ -1,0 +1,16 @@
+lava_base_url: https://lkft.validation.linaro.org
+
+rules:
+- exact_match:
+    device_type: x15
+  re_match:
+    error_msg: lava-test-shell timed out after \d+ seconds
+    job_name: lkft-kselftest-linux
+    job_output:
+      - Failed to allocate trace_probe
+      - Kprobe dynamic event - probing module\s+[FAIL]
+      - axcvzxcvzxcvzxcvzxcv
+  description: |
+    ftracetest - see
+    - https://bugs.linaro.org/show_bug.cgi?id=3297
+    - https://bugs.linaro.org/show_bug.cgi?id=3304
