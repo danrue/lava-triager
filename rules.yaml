@@ -4,12 +4,11 @@ rules:
 - exact_match:
     device_type: x15
   re_match:
-    error_msg: lava-test-shell timed out after \d+ seconds
+    error_msg: 'lava-test-shell timed out after \d+ seconds'
     job_name: lkft-kselftest-linux
     job_output:
       - Failed to allocate trace_probe
-      - Kprobe dynamic event - probing module\s+[FAIL]
-      - axcvzxcvzxcvzxcvzxcv
+      - 'Kprobe dynamic event - probing module\\t\[FAIL\]'
   description: |
     ftracetest - see
     - https://bugs.linaro.org/show_bug.cgi?id=3297

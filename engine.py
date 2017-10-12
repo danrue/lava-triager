@@ -3,6 +3,7 @@ import pprint
 import re
 import requests
 import sys
+import textwrap
 import yaml
 
 class lkftTriage(object):
@@ -37,28 +38,19 @@ class lkftTriage(object):
         self.job_name = self.job_definition['job_name']
         self.job_output = str(self.job_log) # ok so this is kind of lazy..
 
-with open("rules.yaml", 'r') as f:
-    rule_file_content = yaml.load(f)
-
-job_id = sys.argv[1]
-lava_base_url = rule_file_content['lava_base_url']
-engine = lkftTriage(lava_base_url, job_id)
-#pprint.pprint(engine.job_definition)
-#pprint.pprint(engine.results)
-#pprint.pprint(engine.job_log)
-#print(engine.error_msg)
-
-def exact_match_check():
-for rule in rule_file_content['rules']:
-    for rule_name, rule_value in rule['exact_match'].items():
-        # continue to process next rule; break to go to next set of rules
+def exact_match_check(engine, exact_match_dict):
+    for rule_name, rule_value in exact_match_dict.items():
         if engine.device_type == rule_value:
             continue
         else:
             print("Not a match!")
-            break
-    for rule_name, rule_value in rule['re_match'].items():
-        # continue to process next rule; break to go to next set of rules
+            print(rule_name)
+            print(rule_value)
+            return False
+    return True
+
+def re_match_check(engine, re_match_dict):
+    for rule_name, rule_value in re_match_dict.items():
         if not isinstance(rule_value, list):
             rule_value = [rule_value]
         for regex in rule_value:
@@ -66,10 +58,32 @@ for rule in rule_file_content['rules']:
                 continue
             else:
                 print("Not a match!")
-                break
+                print(rule_name)
+                print(regex)
+                return False
+    return True
 
-    import textwrap
-    print("Lava job {}/scheduler/job/{}".format(lava_base_url, job_id))
-    print(textwrap.indent("Known issue:", '  '))
-    print(textwrap.indent(rule['description'], '    '))
+def main(job_id):
+    with open("rules.yaml", 'r') as f:
+        rule_file_content = yaml.load(f)
 
+    lava_base_url = rule_file_content['lava_base_url']
+    engine = lkftTriage(lava_base_url, job_id)
+    #pprint.pprint(engine.job_definition)
+    #pprint.pprint(engine.results)
+    #pprint.pprint(engine.job_log)
+    #print(engine.error_msg)
+    #print(engine.job_output)
+
+    buf = ""
+    for rule in rule_file_content['rules']:
+        if (exact_match_check(engine, rule['exact_match']) and
+            re_match_check(engine, rule['re_match'])):
+            buf += "Lava job {}/scheduler/job/{}\n".format(lava_base_url, job_id)
+            buf += textwrap.indent("Known issue:\n", '  ')
+            buf += textwrap.indent(rule['description'], '    ')
+    return buf
+
+if __name__ == '__main__':
+    job_id = sys.argv[1]
+    print(main(job_id))
