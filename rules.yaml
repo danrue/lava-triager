@@ -10,6 +10,17 @@ rules:
       - Failed to allocate trace_probe
       - 'Kprobe dynamic event - probing module\\t\[FAIL\]'
   description: |
-    ftracetest - see
+    LKFT: linux-next: x15: kselftest: ftracetest hangs forever
     - https://bugs.linaro.org/show_bug.cgi?id=3297
     - https://bugs.linaro.org/show_bug.cgi?id=3304
+
+- re_match:
+    error_msg: 'lava-test-shell timed out after \d+ seconds'
+    job_name: lkft-ltp-syscalls-linux
+    job_output:
+      - 'LTP Version: 20170929'
+      - 'INFO: task fanotify07:\d+ blocked for more than \d+ seconds.'
+  description: |
+    LTP: 20170929: hikey: fanotify07 sometimes causes kernel trace and LTP to hang
+    - https://bugs.linaro.org/show_bug.cgi?id=3303
+

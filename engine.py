@@ -43,9 +43,6 @@ def exact_match_check(engine, exact_match_dict):
         if engine.device_type == rule_value:
             continue
         else:
-            print("Not a match!")
-            print(rule_name)
-            print(rule_value)
             return False
     return True
 
@@ -57,9 +54,6 @@ def re_match_check(engine, re_match_dict):
             if re.search(regex, getattr(engine, rule_name)):
                 continue
             else:
-                print("Not a match!")
-                print(rule_name)
-                print(regex)
                 return False
     return True
 
@@ -77,8 +71,8 @@ def main(job_id):
 
     buf = ""
     for rule in rule_file_content['rules']:
-        if (exact_match_check(engine, rule['exact_match']) and
-            re_match_check(engine, rule['re_match'])):
+        if (exact_match_check(engine, rule.get('exact_match', {})) and
+            re_match_check(engine, rule.get('re_match', {}))):
             buf += "Lava job {}/scheduler/job/{}\n".format(lava_base_url, job_id)
             buf += textwrap.indent("Known issue:\n", '  ')
             buf += textwrap.indent(rule['description'], '    ')
