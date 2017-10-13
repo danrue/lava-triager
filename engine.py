@@ -74,8 +74,8 @@ def main(job_id):
         if (exact_match_check(engine, rule.get('exact_match', {})) and
             re_match_check(engine, rule.get('re_match', {}))):
             buf += "Lava job {}/scheduler/job/{}\n".format(lava_base_url, job_id)
-            buf += textwrap.indent("Known issue:\n", '  ')
-            buf += textwrap.indent(rule['description'], '    ')
+            buf += "Known issue:\n"
+            buf += textwrap.indent(rule['description'], '  ')
     return buf
 
 if __name__ == '__main__':

@@ -24,3 +24,24 @@ rules:
     LTP: 20170929: hikey: fanotify07 sometimes causes kernel trace and LTP to hang
     - https://bugs.linaro.org/show_bug.cgi?id=3303
 
+- re_match:
+    error_msg: 'lava-test-shell timed out after \d+ seconds'
+    job_name: lkft-ltp-sched-
+    device_type: '^(juno-r2|x86)$'
+    job_output:
+      - 'nfs: server 10.\d+.\d+.\d+ not responding, still trying'
+  description: |
+    lkft-ltp-sched issue on juno-r2 and x86
+    nfs: server 10.66.16.115 not responding, still trying
+    No bug open yet
+
+# https://lkft.validation.linaro.org/scheduler/job/46682
+- re_match:
+    job_name: lkft-kselftest-linux-4.4.y
+    error_msg: 'lava-test-shell timed out after \d+ seconds'
+    device_type: ^x86$
+    job_output:
+      - 'selftests: ftracetest \[FAIL\]'
+  description:
+    ftracetest failure on x86. Similar to x15 issue
+    No bug open yet
