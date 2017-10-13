@@ -42,6 +42,6 @@ rules:
     device_type: ^x86$
     job_output:
       - 'selftests: ftracetest \[FAIL\]'
-  description:
+  description: |
     ftracetest failure on x86. Similar to x15 issue
     No bug open yet
