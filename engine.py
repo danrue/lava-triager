@@ -2,14 +2,20 @@
 import pprint
 import re
 import requests
+import requests_cache
 import sys
 import textwrap
 import yaml
+
 
 class lavaTriage(object):
     def __init__(self, lava_base_url, job_id):
         self.lava_base_url = lava_base_url
         self.job_id = job_id
+
+        # Cache all lava requests for a week (they don't change)
+        requests_cache.install_cache('lava-triage', expire_after=60*60*24*7)
+
         self._get_results()
         self._get_job_definition()
         self._get_job_log()
@@ -36,7 +42,7 @@ class lavaTriage(object):
         self.device_type = self.job_definition['device_type']
         self.error_msg = self.job_log[-1]['msg'].get('error_msg', None)
         self.job_name = self.job_definition['job_name']
-        self.job_output = str(self.job_log) # ok so this is kind of lazy..
+        self.job_output = str(self.job_log)  # ok so this is kind of lazy..
 
     def re_match_check(self, re_match_dict):
         """ For each key/value regex in re_match_dict,
@@ -60,17 +66,18 @@ class lavaTriage(object):
                 matching_rules.append(rule)
         return matching_rules
 
+
 def main(job_id):
     with open("rules.yaml", 'r') as f:
         rule_file_content = yaml.load(f)
 
     lava_base_url = rule_file_content['lava_base_url']
     engine = lavaTriage(lava_base_url, job_id)
-    #pprint.pprint(engine.job_definition)
-    #pprint.pprint(engine.results)
-    #pprint.pprint(engine.job_log)
-    #print(engine.error_msg)
-    #print(engine.job_output)
+    # pprint.pprint(engine.job_definition)
+    # pprint.pprint(engine.results)
+    # pprint.pprint(engine.job_log)
+    # print(engine.error_msg)
+    # print(engine.job_output)
 
     matching_rules = engine.find_matching_rules(rule_file_content['rules'])
     return engine, matching_rules
@@ -98,4 +105,3 @@ if __name__ == '__main__':
         })
         print(yaml.dump(new_rule))
         sys.exit(1)
-
