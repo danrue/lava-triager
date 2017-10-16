@@ -40,7 +40,7 @@ class lavaTriage(object):
 
     def _set_attributes(self):
         self.device_type = self.job_definition['device_type']
-        self.error_msg = self.job_log[-1]['msg'].get('error_msg', None)
+        self.error_msg = self.job_log[-1]['msg'].get('error_msg', "")
         self.job_name = self.job_definition['job_name']
         self.job_output = str(self.job_log)  # ok so this is kind of lazy..
 
