@@ -1,30 +1,18 @@
 import engine
+import pytest
+import yaml
 
-# This should be able to read in rules.yaml and execute engine.py against each
-# rule and ensure that each rule matches its defined output and nothing more.
+with open("rules.yaml", 'r') as f:
+    rules = yaml.load(f)
 
-assert (engine.main(46497) ==
-"""Lava job https://lkft.validation.linaro.org/scheduler/job/46497
-Known issue:
-  LKFT: linux-next: x15: kselftest: ftracetest hangs forever
-  - https://bugs.linaro.org/show_bug.cgi?id=3297
-  - https://bugs.linaro.org/show_bug.cgi?id=3304
-"""
-)
-
-assert (engine.main(46575) ==
-"""Lava job https://lkft.validation.linaro.org/scheduler/job/46575
-Known issue:
-  LTP: 20170929: hikey: fanotify07 sometimes causes kernel trace and LTP to hang
-  - https://bugs.linaro.org/show_bug.cgi?id=3303
-"""
-)
-
-assert (engine.main(46493) ==
-"""Lava job https://lkft.validation.linaro.org/scheduler/job/46493
-Known issue:
-  lkft-ltp-sched issue on juno-r2 and x86
-  nfs: server 10.66.16.115 not responding, still trying
-  No bug open yet
-"""
-)
+@pytest.mark.parametrize("rule", rules['rules'])
+def test_rule(rule):
+    '''
+        For every rule defined in rules.yaml, run engine against each known_job
+        defined and ensure that the rule returned matches the rule defined.
+        Note that such an implementation might cause high load on the lava
+        server, and is rather slow.
+    '''
+    for known_job in rule['known_jobs']:
+        engine_results = engine.main(known_job)
+        assert rule in engine_results

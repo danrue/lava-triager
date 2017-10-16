@@ -1,35 +1,44 @@
 lava_base_url: https://lkft.validation.linaro.org
 
 rules:
-- exact_match:
-    device_type: x15
-  re_match:
+
+# https://lkft.validation.linaro.org/scheduler/job/46497
+- re_match:
     error_msg: 'lava-test-shell timed out after \d+ seconds'
     job_name: lkft-kselftest-linux
+    device_type: ^x15$
     job_output:
       - Failed to allocate trace_probe
       - 'Kprobe dynamic event - probing module\\t\[FAIL\]'
+  known_jobs:
+    - 46497
   description: |
     LKFT: linux-next: x15: kselftest: ftracetest hangs forever
     - https://bugs.linaro.org/show_bug.cgi?id=3297
     - https://bugs.linaro.org/show_bug.cgi?id=3304
 
+# https://lkft.validation.linaro.org/scheduler/job/46575
 - re_match:
     error_msg: 'lava-test-shell timed out after \d+ seconds'
     job_name: lkft-ltp-syscalls-linux
     job_output:
       - 'LTP Version: 20170929'
       - 'INFO: task fanotify07:\d+ blocked for more than \d+ seconds.'
+  known_jobs:
+    - 46575
   description: |
     LTP: 20170929: hikey: fanotify07 sometimes causes kernel trace and LTP to hang
     - https://bugs.linaro.org/show_bug.cgi?id=3303
 
+# https://lkft.validation.linaro.org/scheduler/job/46493
 - re_match:
     error_msg: 'lava-test-shell timed out after \d+ seconds'
     job_name: lkft-ltp-sched-
     device_type: '^(juno-r2|x86)$'
     job_output:
       - 'nfs: server 10.\d+.\d+.\d+ not responding, still trying'
+  known_jobs:
+    - 46493
   description: |
     LKFT: linux-mainline: x86 : ltp sched tests hang due to NFS not responding
     note: also occurs on juno-r2
@@ -42,6 +51,8 @@ rules:
     device_type: ^x86$
     job_output:
       - 'selftests: ftracetest \[FAIL\]'
+  known_jobs:
+    - 46682
   description: |
     LKFT: 4.4 : x86: kselftest test case ftracetest failed
     https://bugs.linaro.org/show_bug.cgi?id=3336
@@ -54,6 +65,8 @@ rules:
     job_output:
       # multiline regex, detect reboot after tests start
       - 'Running tests........*NOTICE:  Booting Trusted Firmware'
+  known_jobs:
+    - 47665
   description: |
     LKFT: linux-mainline: HiKey: Overheating and auto reboot with
     "power_allocator" when running hackbench
@@ -67,6 +80,8 @@ rules:
     job_output:
       # Ensure we're getting linux-next
       - 'Validating that http:\/\/snapshots.linaro.org\/openembedded\/lkft\/morty\/juno\/rpb\/linux-next\/\d+\/juno-oe-uboot.zip exists'
+  known_jobs:
+    - 47628
   description: |
     LKFT: linux-next: Juno: Failed to start Linux kernel and boot failed
     https://bugs.linaro.org/show_bug.cgi?id=3325
