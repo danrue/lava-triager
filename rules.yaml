@@ -43,5 +43,31 @@ rules:
     job_output:
       - 'selftests: ftracetest \[FAIL\]'
   description: |
-    ftracetest failure on x86. Similar to x15 issue
-    No bug open yet
+    LKFT: 4.4 : x86: kselftest test case ftracetest failed
+    https://bugs.linaro.org/show_bug.cgi?id=3336
+
+# https://lkft.validation.linaro.org/scheduler/job/47665
+- re_match:
+    job_name: lkft-ltp-sched-
+    device_type: ^hi6220-hikey$
+    error_msg: 'lava-test-shell timed out after \d+ seconds'
+    job_output:
+      # multiline regex, detect reboot after tests start
+      - 'Running tests........*NOTICE:  Booting Trusted Firmware'
+  description: |
+    LKFT: linux-mainline: HiKey: Overheating and auto reboot with
+    "power_allocator" when running hackbench
+    https://bugs.linaro.org/show_bug.cgi?id=3322
+
+# https://lkft.validation.linaro.org/scheduler/job/47628
+- re_match:
+    job_name: lkft-ltp-timers-master
+    device_type: ^juno-r2$
+    error_msg: bootloader-commands timed out after \d+ seconds
+    job_output:
+      # Ensure we're getting linux-next
+      - 'Validating that http:\/\/snapshots.linaro.org\/openembedded\/lkft\/morty\/juno\/rpb\/linux-next\/\d+\/juno-oe-uboot.zip exists'
+  description: |
+    LKFT: linux-next: Juno: Failed to start Linux kernel and boot failed
+    https://bugs.linaro.org/show_bug.cgi?id=3325
+

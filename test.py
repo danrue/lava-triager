@@ -1,5 +1,8 @@
 import engine
 
+# This should be able to read in rules.yaml and execute engine.py against each
+# rule and ensure that each rule matches its defined output and nothing more.
+
 assert (engine.main(46497) ==
 """Lava job https://lkft.validation.linaro.org/scheduler/job/46497
 Known issue:
