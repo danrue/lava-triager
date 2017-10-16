@@ -2,7 +2,6 @@ lava_base_url: https://lkft.validation.linaro.org
 
 rules:
 
-# https://lkft.validation.linaro.org/scheduler/job/46497
 - re_match:
     error_msg: 'lava-test-shell timed out after \d+ seconds'
     job_name: lkft-kselftest-linux
@@ -17,7 +16,6 @@ rules:
     - https://bugs.linaro.org/show_bug.cgi?id=3297
     - https://bugs.linaro.org/show_bug.cgi?id=3304
 
-# https://lkft.validation.linaro.org/scheduler/job/46575
 - re_match:
     error_msg: 'lava-test-shell timed out after \d+ seconds'
     job_name: lkft-ltp-syscalls-linux
@@ -30,7 +28,6 @@ rules:
     LTP: 20170929: hikey: fanotify07 sometimes causes kernel trace and LTP to hang
     - https://bugs.linaro.org/show_bug.cgi?id=3303
 
-# https://lkft.validation.linaro.org/scheduler/job/46493
 - re_match:
     error_msg: 'lava-test-shell timed out after \d+ seconds'
     job_name: lkft-ltp-sched-
@@ -44,7 +41,6 @@ rules:
     note: also occurs on juno-r2
     https://bugs.linaro.org/show_bug.cgi?id=3338
 
-# https://lkft.validation.linaro.org/scheduler/job/46682
 - re_match:
     job_name: lkft-kselftest-linux-4.4.y
     error_msg: 'lava-test-shell timed out after \d+ seconds'
@@ -57,7 +53,6 @@ rules:
     LKFT: 4.4 : x86: kselftest test case ftracetest failed
     https://bugs.linaro.org/show_bug.cgi?id=3336
 
-# https://lkft.validation.linaro.org/scheduler/job/47665
 - re_match:
     job_name: lkft-ltp-sched-
     device_type: ^hi6220-hikey$
@@ -72,7 +67,6 @@ rules:
     "power_allocator" when running hackbench
     https://bugs.linaro.org/show_bug.cgi?id=3322
 
-# https://lkft.validation.linaro.org/scheduler/job/47628
 - re_match:
     job_name: lkft-ltp-timers-master
     device_type: ^juno-r2$
@@ -85,4 +79,13 @@ rules:
   description: |
     LKFT: linux-next: Juno: Failed to start Linux kernel and boot failed
     https://bugs.linaro.org/show_bug.cgi?id=3325
+
+- re_match:
+    device_type: ^hi6220-hikey$
+    error_msg: lava-test-shell timed out after \d+ seconds
+    job_name: lkft-ltp-sched-4.4.93-rc1-hikey-20171016-33
+    job_output:
+      - 'Internal error: Oops: 96000006 \[#1\] PREEMPT SMP'
+  known_jobs: ['47896']
+  description: email thread 20171016
 

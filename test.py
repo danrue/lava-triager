@@ -14,5 +14,5 @@ def test_rule(rule):
         server, and is rather slow.
     '''
     for known_job in rule['known_jobs']:
-        engine_results = engine.main(known_job)
+        _, engine_results = engine.main(known_job)
         assert rule in engine_results

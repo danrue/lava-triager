@@ -73,12 +73,29 @@ def main(job_id):
     #print(engine.job_output)
 
     matching_rules = engine.find_matching_rules(rule_file_content['rules'])
-    return matching_rules
+    return engine, matching_rules
 
 if __name__ == '__main__':
     job_id = sys.argv[1]
-    matching_rules = main(job_id)
-    for rule in matching_rules:
-        print("Known issue:")
-        print(textwrap.indent(rule['description'], '  '))
+    engine, matching_rules = main(job_id)
+
+    if matching_rules:
+        for rule in matching_rules:
+            print("Known issue:")
+            print(textwrap.indent(rule['description'], '  '))
+    else:
+        print("No known rule found. Here's a starting point:")
+        new_rule = []
+        new_rule.append({
+            're_match': {
+                'job_name': engine.job_name,
+                'error_msg': engine.error_msg,
+                'job_output': [],
+                'device_type': '^'+engine.device_type+'$',
+            },
+            'known_jobs': [job_id],
+            'description': "Job Description"
+        })
+        print(yaml.dump(new_rule))
+        sys.exit(1)
 
