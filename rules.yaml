@@ -119,3 +119,17 @@ rules:
     device_type: ^x15$
     error_msg: '\/usr\/local\/lab-scripts\/eth\d+_control -a \d+.\d+.\d+.\d+ -r \d+ -s onoff failed'
     job_name: lkft-
+
+- description: |
+    ltp-sched failure - see email thread 20171017
+  known_jobs: ['48226']
+  re_match:
+    device_type: ^hi6220-hikey$
+    error_msg: lava-test-shell timed out after \d+ seconds
+    job_name: lkft-ltp-sched-4.4.
+    job_output:
+      - 'Unable to handle kernel NULL pointer dereference at virtual address 00000080'
+      - 'Internal error: Oops: 96000006 \[#1\] PREEMPT SMP'
+      - 'INFO: rcu_sched detected stalls on CPUs/task'
+
+
