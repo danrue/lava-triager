@@ -89,3 +89,33 @@ rules:
   known_jobs: ['47896']
   description: email thread 20171016
 
+- re_match:
+    device_type: ^hi6220-hikey$
+    error_msg: '(lava-test-shell timed out after \d+ seconds|auto-login-action timed out after \d+ seconds)'
+    job_name: lkft-
+    job_output:
+      - 'WARNING: CPU: \d+ PID: \d+ at [^ ]+ spi_register_controller\+'
+  known_jobs: ['48014']
+  description: |
+    LKFT: linux-next: Hikey: Kernel warning: spi_register_controller
+    https://bugs.linaro.org/show_bug.cgi?id=3346
+
+- re_match:
+    device_type: ^hi6220-hikey$
+    error_msg: lava-test-shell timed out after \d+ seconds
+    job_name: lkft-
+    job_output:
+      - 'Internal error: Oops: 96000004 \[#1\] PREEMPT SMP'
+  known_jobs: ['48014']
+  description: |
+    LKFT: linux-next: Hikey: kernel warnings and Internal error: Oops:
+    96000004 [#1] PREEMPT SMP
+    https://bugs.linaro.org/show_bug.cgi?id=3345
+
+- description: |
+    Infrastructure failure: pdu reboot failed
+  known_jobs: ['48001']
+  re_match:
+    device_type: ^x15$
+    error_msg: '\/usr\/local\/lab-scripts\/eth\d+_control -a \d+.\d+.\d+.\d+ -r \d+ -s onoff failed'
+    job_name: lkft-
