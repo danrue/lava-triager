@@ -24,9 +24,9 @@ class lavaTriage(object):
     def _get_results(self):
         url = "{}/results/{}/yaml".format(self.lava_base_url, self.job_id)
         r = requests.get(url)
-        #print(url)
-        #print(r.text)
-        #sys.exit()
+        assert r.status_code == 200, (
+                "Results are not available at {}, HTTP {}".format(
+                    url, r.status_code))
 
         self.results = yaml.load(r.text.encode('utf-8', 'ignore'))
 
