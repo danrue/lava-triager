@@ -68,7 +68,7 @@ rules:
     https://bugs.linaro.org/show_bug.cgi?id=3322
 
 - re_match:
-    job_name: lkft-ltp-timers-master
+    job_name: lkft-
     device_type: ^juno-r2$
     error_msg: bootloader-commands timed out after \d+ seconds
     job_output:
@@ -121,7 +121,10 @@ rules:
     job_name: lkft-
 
 - description: |
-    ltp-sched failure - see email thread 20171017
+    LKFT: 4.4-rc: Hikey: kernel panic: Unable to handle kernel NULL
+    pointer dereference at virtual address 00000080 while running LTP
+    sched on hikey
+    https://bugs.linaro.org/show_bug.cgi?id=3324
   known_jobs: ['48226']
   re_match:
     device_type: ^hi6220-hikey$
@@ -132,4 +135,37 @@ rules:
       - 'Internal error: Oops: 96000006 \[#1\] PREEMPT SMP'
       - 'INFO: rcu_sched detected stalls on CPUs/task'
 
+- description: |
+    Infrastructure failure: Unable to fetch git repository
+  known_jobs: ['48406']
+  re_match:
+    error_msg: Unable to fetch git repository
+    job_name: lkft-
+
+- description: |
+    LKFT: 4.4-rc: Hikey: kernel panic: Unable to handle kernel NULL
+    pointer dereference at virtual address 00000080 while running LTP
+    sched on hikey
+    https://bugs.linaro.org/show_bug.cgi?id=3324
+  known_jobs: ['48274']
+  re_match:
+    device_type: ^hi6220-hikey$
+    error_msg: lava-test-shell timed out after \d+ seconds
+    job_name: lkft-ltp-sched-android-hikey-linaro-4.4
+    job_output:
+      - 'Unable to handle kernel NULL pointer dereference at virtual address 000001f0'
+      - 'Internal error: Oops: 96000005 \[#1\] PREEMPT SMP'
+
+- description: |
+    LKFT: android-hikey-linaro-4.4: WARNING: at
+    net/packet/af_packet.c:4104 packet_set_ring - Tx-ring is not supported
+    on Linux-4.4
+    https://bugs.linaro.org/show_bug.cgi?id=3141
+  known_jobs: ['48258']
+  re_match:
+    device_type: ^hi6220-hikey$
+    error_msg: lava-test-shell timed out after \d+ seconds
+    job_name: lkft-kselftest-
+    job_output:
+      - 'Tx-ring is not supported\.'
 
