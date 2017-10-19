@@ -102,7 +102,7 @@ rules:
 
 - re_match:
     device_type: ^hi6220-hikey$
-    error_msg: lava-test-shell timed out after \d+ seconds
+    error_msg: '(lava-test-shell timed out after \d+ seconds|Unable to handle the test shell signal correctly: ''bool'' object is not callable|auto-login-action timed out after \d+ seconds)'
     job_name: lkft-
     job_output:
       - 'Internal error: Oops: 96000004 \[#1\] PREEMPT SMP'
@@ -168,4 +168,17 @@ rules:
     job_name: lkft-kselftest-
     job_output:
       - 'Tx-ring is not supported\.'
+
+# This match is quite vague.. Need something to indicate that ftrace is hanging.
+- description: |
+    LKFT: linux-next: Hikey: kselftest ftrace hangs forever
+    https://bugs.linaro.org/show_bug.cgi?id=3360
+  known_jobs: ['49044']
+  re_match:
+    device_type: ^hi6220-hikey$
+    error_msg: lava-test-shell timed out after \d+ seconds
+    job_name: lkft-kselftest-master
+    job_output:
+      # Ensure we're getting linux-next
+      - 'Validating that http:\/\/snapshots.linaro.org\/openembedded\/lkft\/morty\/hikey\/rpb\/linux-next\/'
 

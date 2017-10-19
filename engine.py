@@ -72,6 +72,7 @@ class lavaTriage(object):
 
 
 def main(job_id):
+    assert job_id.isdigit(), "job_id must be a number"
     with open("rules.yaml", 'r') as f:
         rule_file_content = yaml.load(f)
 
@@ -88,6 +89,7 @@ def main(job_id):
 
 if __name__ == '__main__':
     job_id = sys.argv[1]
+    assert job_id.isdigit(), "Usage: {} (lava job number)".format(sys.argv[0])
     engine, matching_rules = main(job_id)
 
     if matching_rules:

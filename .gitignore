@@ -3,3 +3,4 @@ __pycache__/
 *.pyc
 .cache
 lava-triage.sqlite
+.email_cache.json
