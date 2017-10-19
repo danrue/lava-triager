@@ -133,7 +133,6 @@ rules:
     job_output:
       - 'Unable to handle kernel NULL pointer dereference at virtual address 00000080'
       - 'Internal error: Oops: 96000006 \[#1\] PREEMPT SMP'
-      - 'INFO: rcu_sched detected stalls on CPUs/task'
 
 - description: |
     Infrastructure failure: Unable to fetch git repository
