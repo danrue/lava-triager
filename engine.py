@@ -95,8 +95,7 @@ if __name__ == '__main__':
 
     if matching_rules:
         for rule in matching_rules:
-            print("Known issue:")
-            print(textwrap.indent(rule['description'], '  '))
+            print(rule['description'])
     else:
         print("No known rule found. Here's a starting point:")
         new_rule = []

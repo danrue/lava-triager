@@ -181,3 +181,27 @@ rules:
       # Ensure we're getting linux-next
       - 'Validating that http:\/\/snapshots.linaro.org\/openembedded\/lkft\/morty\/hikey\/rpb\/linux-next\/'
 
+- description: |
+    Infrastructure failure - power-off timed out
+  known_jobs: ['49402']
+  re_match:
+    error_msg: 'power-off timed out after \d+ seconds'
+    job_name: lkft-
+
+- description: Infrastructure failure - fastboot failed
+  known_jobs: ['49525']
+  re_match:
+    device_type: ^hi6220-hikey$
+    error_msg: fastboot-flash-action timed out after \d+ seconds
+    job_name: lkft-
+    job_output: []
+
+- description: |
+    Infrastructure issue - kernel message corruption caused by sharing a single
+    UART.
+  known_jobs: ['49547']
+  re_match:
+    device_type: ^hi6220-hikey$
+    error_msg: 'Unable to handle the test shell signal correctly: _on_endrun\(\) takes exactly 3 arguments \(\d+ given\)'
+    job_name: lkft-
+
