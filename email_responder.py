@@ -60,8 +60,7 @@ mail.list()
 mail.select("INBOX")
 result, data = mail.uid('search', None, 'FROM', '"qa-reports@linaro.org"',
                                         'SUBJECT', 'TestJob',
-                                        'SUBJECT', 'failed',
-                                        'SUBJECT', 'status',
+                                        'SUBJECT', 'lkft',
                                         'SUBJECT', 'Incomplete',
                                         )
 
@@ -72,7 +71,7 @@ for uid in data[0].split():
 
     email_message = email.message_from_string(raw_email.decode("utf-8"))
 
-    m = re.search('TestJob (\d+) ', email_message['Subject'])
+    m = re.search('TestJob (\d+): ', email_message['Subject'])
     lava_job_id = m.group(1)
 
     if cache.has(lava_job_id):
@@ -92,7 +91,11 @@ for uid in data[0].split():
     for result in job_results:
         response_content += result['description']
 
-    response_details = yaml.dump(job_results)
+    job_results_no_description = []
+    for result in job_results:
+        del result['description']
+        job_results_no_description.append(result)
+    response_details = yaml.dump(job_results_no_description)
 
     response_body = """
 On {}, {} said:
